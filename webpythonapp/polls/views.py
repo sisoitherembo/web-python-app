@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from django.urls import reverse
+from django.db.models import F
 
 from .models import Question, Choice
 
@@ -35,7 +36,6 @@ def vote(request, question_id):
             "error_message" : "You didn't select a choice"
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
+        selected_choice.update(votes=F('votes') + 1)
         return HttpResponseRedirect(reverse('polls:results', args=(question_id,)))
 
