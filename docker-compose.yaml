@@ -1,14 +1,27 @@
 version: '3.9'
 
-services:
-  #db:
-
-  
+services:  
   web:
     build: .
-    command: python ./webpythonapp/manage.py runserver 0:8080
+    command: python webpythonapp/manage.py runserver 0:8080
     volumes: 
-      - .:/code/
+      - ./app:/usr/src/app/
     ports:
       -  "8000:8080"
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13.0
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=webpythonapp
+      - POSTGRES_PASSWORD=webpythonapp
+      - POSTGRES_DB=webpythonapp_dev
+
+volumes:
+  postgres_data:
     
