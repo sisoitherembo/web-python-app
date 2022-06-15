@@ -11,6 +11,13 @@ then
     echo "PostgreSQL started!!"
 fi
 
+if [ "$INIT_STATIC_FILES" = "1"]
+then
+    echo "Collecting static files..."
+    python manage.py collectstatic
+    echo "Collecting of the static files completed!!"
+fi
+
 if [ "$FLUSH_DB" = "1" ]
 then
     echo "Migrating DB..."
